@@ -158,7 +158,7 @@ package com.adobe.net
 			["video/x-amt-showrun","xsr"],
 			["video/x-atomic3d-feature","fmf"],
 			["video/x-dv","dif","dv"],
-			["video/x-flv","flv"],
+			["video/x-flv","flv",".f4v",".f4p",".f4a",".f4b"],
 			["video/x-isvideo","isu"],
 			["video/x-motion-jpeg","mjpg"],
 			["video/x-ms-wmv","wmv"],
