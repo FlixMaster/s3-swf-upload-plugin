@@ -16,10 +16,9 @@ There is also a demo app running on heroku at "http://s3swfuploader.heroku.com/"
 
 h2. Usage
 
-1. Edit <code>Gemfile</code> and add this as a gem, you'll also need aws-s3
+1. Edit <code>Gemfile</code> and add this as a gem
 
 <pre><code>gem 's3_swf_upload', :git => 'git://github.com/nathancolgate/s3-swf-upload-plugin'
-gem 'aws-s3', :require => 'aws/s3'
 </code></pre>
 	
 2. Bundle it!
@@ -31,8 +30,11 @@ gem 'aws-s3', :require => 'aws/s3'
 
 <pre><code>$ rails generate s3_swf_upload:uploader
 </code></pre>
+
+If you are using Rails 3.1, you will need to move the generated s3_upload.js from the public/javascripts directory to the app/assets/javascripts directory.
 	
 4. Configure your amazon parameters via the generated <code>config/amazon_s3.yml</code> file.
+(key and secret can optionally be removed from that file and configured via <code>ENV['AWS_ACCESS_KEY_ID']</code> and <code>ENV['AWS_SECRET_ACCESS_KEY']</code>)
 
 5. Make the bucket
 
@@ -109,6 +111,10 @@ String to be prepended to the uploaded file name to make the Amazon S3 key (loca
 h3. :signaturePath _(string = '/s3_uploads.xml')_
 
 Fully qualified path to the controller and action that will serve up the Amazon S3 signature
+
+h3. :swfFilePath _(string = '/flash/s3_upload.swf')_
+
+Fully qualified path to the SWF file (this is the one that does all the work).
 
 h3. :buttonUpPath _(string = '/flash/s3_up_button.gif')_
 
