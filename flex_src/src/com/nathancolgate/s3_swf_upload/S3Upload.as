@@ -1,5 +1,6 @@
 package com.nathancolgate.s3_swf_upload {
-	
+
+	import com.demonsters.debugger.MonsterDebugger;	
 	import com.elctech.S3UploadOptions;
 	import com.elctech.S3UploadRequest;
   import flash.external.ExternalInterface;
@@ -12,6 +13,9 @@ package com.nathancolgate.s3_swf_upload {
 		private var _upload_options:S3UploadOptions;
 	
 		public function S3Upload(s3_upload_options:S3UploadOptions) {
+			CONFIG::debug {
+				MonsterDebugger.initialize(this);
+			}
 			super(s3_upload_options);
 			
 			_upload_options = s3_upload_options;
@@ -54,6 +58,8 @@ package com.nathancolgate.s3_swf_upload {
 
 		// only called if there is an  error detected by flash player browsing or _upload_optionsing a file   
 		private function ioErrorHandler(io_error_event:IOErrorEvent):void{
+			MonsterDebugger.trace(this, 'S3Upload::ioErrorHandler');
+			MonsterDebugger.trace(this, io_error_event);
 			// ExternalInterface.call('s3_swf.jsLog','ioErrorHandler');
 			// ExternalInterface.call('s3_swf.jsLog','Calling onUploadIOError...');
 			ExternalInterface.call(S3Uploader.s3_swf_obj+'.onUploadIOError',_upload_options,io_error_event);

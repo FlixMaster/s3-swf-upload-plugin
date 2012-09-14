@@ -1,5 +1,6 @@
 package com.nathancolgate.s3_swf_upload {
 	
+	import com.demonsters.debugger.MonsterDebugger;
 	import com.elctech.S3UploadOptions;
 	import com.nathancolgate.s3_swf_upload.*;
   import flash.external.ExternalInterface;
@@ -18,7 +19,10 @@ package com.nathancolgate.s3_swf_upload {
 
 		public function S3Signature(file:FileReference,
 																	signatureUrl:String,
-																	prefixPath:String) {	
+																	prefixPath:String) {
+			CONFIG::debug {
+				MonsterDebugger.initialize(this);
+			}	
 			_file														= file;
 //			_prefixPath                     = prefixPath
 			// Create options list for file s3 upload metadata 

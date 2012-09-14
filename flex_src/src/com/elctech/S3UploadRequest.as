@@ -1,4 +1,7 @@
 package com.elctech {
+	
+	// import debugger tools
+	import com.demonsters.debugger.MonsterDebugger;
 
 	// import flash.events.*;
 	import flash.events.EventDispatcher;
@@ -55,7 +58,9 @@ package com.elctech {
          * @param    options Options for this request
          */
 		public function S3UploadRequest(options:S3UploadOptions) {
-			
+			CONFIG::debug {
+				MonsterDebugger.initialize(this);
+			}
             _accessKeyId = options.AWSAccessKeyId;
             _bucket      = options.bucket;
             _key         = options.key;
@@ -140,6 +145,8 @@ package com.elctech {
             fileReference.removeEventListener(IOErrorEvent.IO_ERROR, onIOError);
             fileReference.removeEventListener(SecurityErrorEvent.SECURITY_ERROR, onSecurityError);
             fileReference.removeEventListener(DataEvent.UPLOAD_COMPLETE_DATA, onUploadCompleteData);
+            MonsterDebugger.trace(this, 'S3UploadRequest::removeListeners');
+            MonsterDebugger.trace(this, 'removing listeners');
             fileReference.removeEventListener(HTTPStatusEvent.HTTP_STATUS, onHttpStatus);
 				}
 		/**
@@ -169,6 +176,10 @@ package com.elctech {
             fileReference.addEventListener(IOErrorEvent.IO_ERROR, onIOError);
             fileReference.addEventListener(SecurityErrorEvent.SECURITY_ERROR, onSecurityError);
             fileReference.addEventListener(DataEvent.UPLOAD_COMPLETE_DATA, onUploadCompleteData);
+            MonsterDebugger.trace(this, 'S3UploadRequest::upload');
+            MonsterDebugger.trace(this, _fileReference)
+            MonsterDebugger.trace(this, postUrl);
+            MonsterDebugger.trace(this, urlRequest);
             fileReference.addEventListener(HTTPStatusEvent.HTTP_STATUS, onHttpStatus);
             // *****************************************************************************
             
@@ -204,7 +215,7 @@ package com.elctech {
         }
         
         private function onOpen(event:Event):void {
-						trace('onOpen: '+this._key);
+			trace('onOpen: '+this._key);
             this.dispatchEvent(event);
         }
         private function onIOError(event:IOErrorEvent):void {
@@ -235,6 +246,8 @@ package com.elctech {
         }
         private function onHttpStatus(event:HTTPStatusEvent):void {
             _httpStatusErrorReceived = true;
+            MonsterDebugger.trace(this, 'S3UploadRequest::onHttpStatus');
+            MonsterDebugger.trace(this, event);
             if(Math.floor(event.status/100) == 2) {
                 this.dispatchEvent(new DataEvent(DataEvent.UPLOAD_COMPLETE_DATA, event.bubbles, event.cancelable, "Amazon S3 returned HTTP status " + event.status.toString() + "."));
             } else {
