@@ -12,6 +12,7 @@ package com.nathancolgate.s3_swf_upload {
 
 		private var upload_options:S3UploadOptions;
 		private var _file:FileReference;
+    //private var _prefixPath:String
 
 		public var s3upload:S3Upload;
 
@@ -19,7 +20,7 @@ package com.nathancolgate.s3_swf_upload {
 																	signatureUrl:String,
 																	prefixPath:String) {	
 			_file														= file;
-			
+//			_prefixPath                     = prefixPath
 			// Create options list for file s3 upload metadata 
 			upload_options									= new S3UploadOptions;
 			upload_options.FileSize         = _file.size.toString();
@@ -72,13 +73,15 @@ package com.nathancolgate.s3_swf_upload {
       var xml:XML  = new XML(loader.data);
       
       // create the s3 options object
-      upload_options.policy         = xml.policy;
-      upload_options.signature      = xml.signature;
-      upload_options.bucket         = xml.bucket;
-      upload_options.AWSAccessKeyId = xml.accesskeyid;
-      upload_options.acl            = xml.acl;
-      upload_options.Expires        = xml.expirationdate;
-      upload_options.Secure         = xml.https;
+      upload_options.policy             = xml.policy;
+      upload_options.signature          = xml.signature;
+      upload_options.bucket             = xml.bucket;
+      upload_options.AWSAccessKeyId     = xml.accesskeyid;
+      upload_options.acl                = xml.acl;
+      upload_options.Expires            = xml.expirationdate;
+      upload_options.Secure             = xml.https;
+	  upload_options.ContentDisposition = xml.contentDisposition;
+      upload_options.newKey             = xml.newKey;  //NOTE that we stop caring about the specified prefix if we have a newkey.
 
       if (xml.errorMessage != "") {
 				ExternalInterface.call(S3Uploader.s3_swf_obj+'.onSignatureXMLError',toJavascript(_file),xml.errorMessage);
