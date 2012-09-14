@@ -15,7 +15,7 @@
     <!-- Specifies the minimum player version that will run the compiled SWF. -->
     <!-- 9.0.124 is the April 2008 security release -->
     <target-player>9.0.124</target-player>
-<!-- <target-player>11.1</target-player> -->
+<!-- <target-player>11.4</target-player> -->
    <compiler>
 
       <!-- Turn on generation of accessible SWFs. -->
@@ -48,7 +48,7 @@
       <!-- linking.                                                             -->
       <external-library-path>
           <!-- <path-element>${flexlib}/libs/player/{targetPlayerMajorVersion}/playerglobal.swc</path-element> -->
-          <path-element>${flexlib}/libs/player/11.1/playerglobal.swc</path-element>
+          <path-element>${flexlib}/libs/player/11.4/playerglobal.swc</path-element>
           
       </external-library-path>
 
@@ -66,11 +66,12 @@
 
       <!-- List of SWC files or directories that contain SWC files. -->
       <library-path>
+          <path-element>../libs</path-element>
          <path-element>${flexlib}/libs</path-element>   
 		 <!-- keep the original location in the libpath for backwards-compatibility -->
          <path-element>${flexlib}/libs/player</path-element>
          
-         <path-element>${flexlib}/libs/player/11.1</path-element>    
+         <path-element>${flexlib}/libs/player/11.4</path-element>    
          <!-- <path-element>${flexlib}/libs/player/{targetPlayerMajorVersion}</path-element>     -->
          
 	     <path-element>${flexlib}/locale/{locale}</path-element>

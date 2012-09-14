@@ -1,5 +1,6 @@
 package  {
 
+	import com.demonsters.debugger.MonsterDebugger;
 	import flash.events.*;
 	import flash.external.*;
 	import flash.net.*;
@@ -26,6 +27,10 @@ package  {
 		public static var s3_swf_obj:String;
 		
 		public function S3Uploader() {
+			CONFIG::debug {
+				MonsterDebugger.initialize(this);
+			}
+			MonsterDebugger.trace(this, "Hello World!");
 			super();
 			S3Uploader.s3_swf_obj = LoaderInfo(root.loaderInfo).parameters.s3_swf_obj;
 			registerCallbacks();
