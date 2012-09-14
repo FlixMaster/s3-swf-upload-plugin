@@ -1,0 +1,2 @@
+#!/bin/bash
+/opt/local/Library/Frameworks/flex_sdk_4.6/bin/mxmlc -load-config ./bin-release/flex-config.xml -debug=true ./src/S3Uploader.as -output ../lib/s3_swf_upload/railties/generators/uploader/templates/s3_upload.swf -define=CONFIG::debug,true
