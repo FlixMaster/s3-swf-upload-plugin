@@ -30,7 +30,6 @@ package  {
 			CONFIG::debug {
 				MonsterDebugger.initialize(this);
 			}
-			MonsterDebugger.trace(this, "Hello World!");
 			super();
 			S3Uploader.s3_swf_obj = LoaderInfo(root.loaderInfo).parameters.s3_swf_obj;
 			registerCallbacks();
@@ -64,7 +63,6 @@ package  {
 			var browseButton:BrowseButton = new BrowseButton(buttonWidth,buttonHeight,buttonUpUrl,buttonDownUrl,buttonOverUrl);
 		  addChild(browseButton);
 
-
       stage.showDefaultContextMenu = false;
       stage.scaleMode = flash.display.StageScaleMode.NO_SCALE;
       stage.align = flash.display.StageAlign.TOP_LEFT;
@@ -83,7 +81,6 @@ package  {
 			_singleFileDialogBox.addEventListener(Event.SELECT, selectFileHandler);
 
 			
-
 			// Setup Queue, File
 			this.queue 						= new S3Queue(signatureUrl,prefixPath);
 			Globals.queue					= this.queue;
@@ -143,12 +140,24 @@ package  {
 			}
 
 		}
-		
+
+		// Wraps the flash base size getter, to handle file I/O errors on too-large files.
+		private function getSize(file:FileReference):Number{
+			var r:Number
+			try
+			{
+				r = file.size;
+			} catch (err:Error) {
+				r = -1;
+			}
+			return r;
+		}
+
 		// Add Selected File to Queue from file browser dialog box
 		private function addFile(file:FileReference):void{
 			// ExternalInterface.call('s3_swf.jsLog','addFile');
 			if(!file) return;
-			if (checkFileSize(file.size)){
+			if (checkFileSize(getSize(file))){
 				// ExternalInterface.call('s3_swf.jsLog','Adding file to queue...');
 				this.queue.addItem(file);
 				// ExternalInterface.call('s3_swf.jsLog','File added to queue');
@@ -181,9 +190,14 @@ package  {
 
 		/* MISC */
 
-		// Checks the files do not exceed maxFileSize | if maxFileSize == 0 No File Limit Set
+		// Checks the files do not exceed maxFileSize | if maxFileSize == 0 No File Limit Set | if filesize < 0, file is > 2 Gb
 		private function checkFileSize(filesize:Number):Boolean{
 			var r:Boolean = false;
+			// null filesize == file too large, period
+			if (filesize < 0)
+			{
+				return false;
+			}
 			//if  filesize greater then maxFileSize
 			if (filesize > _fileSizeLimit){
 				r = false;
@@ -200,7 +214,7 @@ package  {
 		private function toJavascript(file:FileReference):Object{
 			var javascriptable_file:Object = new Object();
 			javascriptable_file.name = file.name;
-			javascriptable_file.size = file.size;
+			javascriptable_file.size = getSize(file) < 0 ? '> 2Gb' : getSize(file);
 			javascriptable_file.type = file.type;
 			return javascriptable_file;
 		}
